@@ -1,0 +1,66 @@
+# Based on the sample config in Dropwizard example: https://github.com/dropwizard/dropwizard/blob/master/dropwizard-example/example.yml
+# For details on config options, see: http://www.dropwizard.io/1.2.2/docs/manual/configuration.html
+
+# use the simple server factory if you only want to run on a single port
+#server:
+#  type: simple
+#  connector:
+#    type: http
+#    port: 8080
+
+server:
+  requestLog:
+    type: classic
+    timeZone: UTC
+    appenders:
+      - type: console
+
+      - type: file
+        currentLogFilename: /tmp/freemarket/freemarket-request.log
+        archivedLogFilenamePattern: /tmp/freemarket/freemarket-request-%d{yyyy-MM-dd}-%i.log.gz
+        archivedFileCount: 10
+        timeZone: UTC
+        maxFileSize: 10MB
+
+
+  applicationConnectors:
+    - type: http
+      port: 8080
+
+  adminConnectors:
+    - type: http
+      port: 8081
+
+# Database settings.
+database:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+  # the username
+  user: sa
+  # the password
+  password: sa
+  # the JDBC URL
+  url: jdbc:h2:/tmp/freemarket/freemarket
+
+
+
+# Logging settings.
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+# Logback's Time Based Rolling Policy - archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}.log.gz
+# Logback's Size and Time Based Rolling Policy -  archivedLogFilenamePattern: /tmp/application-%d{yyyy-MM-dd}-%i.log.gz
+# Logback's Fixed Window Rolling Policy -  archivedLogFilenamePattern: /tmp/application-%i.log.gz
+
+  appenders:
+    - type: console
+
+    - type: file
+      threshold: INFO
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: /tmp/freemarket/freemarket-application.log
+      archivedLogFilenamePattern: /tmp/freemarket/freemarket-application-%d{yyyy-MM-dd}-%i.log.gz
+      archivedFileCount: 10
+      timeZone: UTC
+      maxFileSize: 10MB

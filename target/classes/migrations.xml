@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="guozheng">
+        <createTable tableName="seller">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="guozheng">
+        <createTable tableName="buyer">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="guozheng">
+        <createTable tableName="project">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1024)"/>
+            <column name="bid_deadline" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="buyer_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_buyer_id" referencedTableName="buyer" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="bid">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+            <!-- status has three possible values: open, loss, win -->
+            <column name="status" type="varchar(16)" defaultValue="open"/>
+            <column name="seller_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_seller_id" referencedTableName="seller" referencedColumnNames="id"/>
+            </column>
+            <column name="project_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_project_id" referencedTableName="project" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
